@@ -1,6 +1,6 @@
-# Force autobuild 1433201324
+# Force autobuild 1433802255
 
-FROM debian:wheezy
+FROM konstruktoid/debian:wheezy
 
 COPY ./files/ /etc/mongod/
 
