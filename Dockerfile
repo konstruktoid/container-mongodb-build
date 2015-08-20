@@ -23,7 +23,10 @@ RUN \
 RUN \
     mkdir -p /data/db && \
     chown -R mongodb:mongodb /data/db /etc/mongod && \
-    chmod a+x /etc/mongod/mongostart.sh
+    chmod a+x /etc/mongod/*.sh
+
+RUN \
+    /etc/mongod/mongocert.sh
 
 VOLUME /data/db
 EXPOSE 27017
