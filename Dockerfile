@@ -10,7 +10,9 @@ RUN \
 
 RUN \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
-    echo "deb http://repo.mongodb.org/apt/debian "$(. /etc/os-release && echo $VERSION | sed 's/[^a-z]*//g')"/mongodb-org/3.0 main" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list && \
+    echo "deb http://repo.mongodb.org/apt/debian "$(. /etc/os-release && \
+    echo $VERSION | sed 's/[^a-z]*//g')"/mongodb-org/3.0 main" | \
+      tee /etc/apt/sources.list.d/mongodb-org-3.0.list && \
     apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y sudo mongodb-org ca-certificates --no-install-recommends && \
