@@ -1,5 +1,5 @@
 #!/bin/bash
 conf='/etc/mongod/mongodb.conf'
-args="$@"
+args="$*"
 
-sudo -u mongodb /usr/bin/mongod --config $conf $args
+su - mongodb -c "/usr/bin/mongod --config $conf --bind_ip_all $args"
