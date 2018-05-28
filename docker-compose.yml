@@ -8,6 +8,7 @@ services:
     ports:
       - "27017"
     cap_add:
+      - AUDIT_WRITE
       - SETGID
       - SETUID
     cap_drop:
