@@ -1,9 +1,13 @@
 
-# Dockerized MongoDB 3.X with WiredTiger
+# Dockerized MongoDB
 
 A Docker MongoDB server.
 
-Automatic build details at [https://registry.hub.docker.com/u/konstruktoid/mongodb/](https://registry.hub.docker.com/u/konstruktoid/mongodb/)
+## Build
+
+`docker build --no-cache -t konstruktoid/mongodb -f Dockerfile .`
+
+## Connecting
 
 ```sh
 docker run --cap-drop=all --cap-add={audit_write,setgid,setuid} -p 27017:27017 -d konstruktoid/mongodb
