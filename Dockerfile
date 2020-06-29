@@ -2,13 +2,14 @@ FROM konstruktoid/debian:buster
 
 COPY ./files/ /etc/mongod/
 
-ENV GPGKEY 58712A2291FA4AD5 656408E390CFB1F5 4B7C549A058F8B6B 68818C72E52529D4
+ENV GPGKEY 253612A09571B484 4B7C549A058F8B6B 58712A2291FA4AD5 656408E390CFB1F5 68818C72E52529D4
 ENV MONGOVER development
 ENV MONGOUSER mongodb
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN groupadd -r "${MONGOUSER}" && \
     useradd -r -g "${MONGOUSER}" "${MONGOUSER}" && \
+    ln -s /bin/true /bin/systemctl && \
     apt-get -y install gnupg --no-install-recommends && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv ${GPGKEY} && \
     echo "deb http://repo.mongodb.org/apt/debian $(. /etc/os-release && \
