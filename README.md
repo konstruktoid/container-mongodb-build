@@ -1,4 +1,3 @@
-
 # Dockerized MongoDB
 
 A Docker MongoDB server.
@@ -6,6 +5,14 @@ A Docker MongoDB server.
 ## Build
 
 `docker build --no-cache -t konstruktoid/mongodb -f Dockerfile .`
+
+### Environmental variables
+
+```sh
+ENV GPGKEY 253612A09571B484 656408E390CFB1F5
+ENV MONGOVER 4.4
+ENV MONGOUSER mongodb
+```
 
 ## Connecting
 
