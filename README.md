@@ -9,8 +9,7 @@ A Docker MongoDB server.
 ### Environmental variables
 
 ```sh
-ENV GPGKEY 253612A09571B484 656408E390CFB1F5
-ENV MONGOVER 4.4
+ENV MONGOVER 5.0
 ENV MONGOUSER mongodb
 ```
 
