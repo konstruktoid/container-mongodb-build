@@ -4,6 +4,9 @@ A Docker MongoDB server.
 
 ## Build
 
+_Please note that because of the changes to [Docker Automated Builds](https://docs.docker.com/docker-hub/builds/)
+many Docker images are now outdated and a manual build is required and recommended._
+
 `docker build --no-cache -t konstruktoid/mongodb -f Dockerfile .`
 
 ### Environmental variables
