@@ -27,7 +27,7 @@ mongo --port 27017 --eval "printjson(db.hostInfo())"
 
 ```sh
 docker run --cap-drop=all --cap-add={audit_write,setgid,setuid} -p 27017:27017 -d konstruktoid/mongodb --sslMode requireSSL --sslPEMKeyFile /etc/ssl/mongodb.pem
-mongo --ssl --sslAllowInvalidCertificates --port 27017 --eval 'printjson(db.hostInfo())'
+mongo --tls --tlsAllowInvalidCertificates --port 27017 --eval 'printjson(db.hostInfo())'
 ```
 
 ## docker-compose
