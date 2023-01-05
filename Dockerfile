@@ -2,7 +2,7 @@ FROM konstruktoid/ubuntu:focal
 
 COPY ./files/ /etc/mongod/
 
-ENV MONGOVER 5.0
+ENV MONGOVER 6.0
 ENV MONGOUSER mongodb
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
