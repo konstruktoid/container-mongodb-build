@@ -44,9 +44,14 @@ capabilities. `mongod` runs as PID 1, so it receives the signals sent on stop.
 ### Unencrypted
 
 ```sh
-$ podman run --name mongo01 --cap-drop=all -p 27017:27017 -d konstruktoid/mongodb
+$ podman run --name mongo01 --cap-drop=all -p 27017:27017 \
+    --tmpfs /run/mongod-secrets:rw,noexec,nosuid,nodev -d konstruktoid/mongodb
 $ podman exec -ti mongo01 mongosh --port 27017 --eval "printjson(db.hostInfo())"
 ```
+
+`--tmpfs` keeps the generated keyfile in memory instead of the container's
+writable layer on disk; without it `mongod` still starts, using the directory
+baked into the image.
 
 ### Using TLS
 
@@ -57,7 +62,8 @@ hostname, with `localhost` and `127.0.0.1` as subject alternative names. It is
 fine for a lab and nothing else.
 
 ```sh
-$ podman run --name mongo02 --cap-drop=all -p 27017:27017 -d konstruktoid/mongodb \
+$ podman run --name mongo02 --cap-drop=all -p 27017:27017 \
+    --tmpfs /run/mongod-secrets:rw,noexec,nosuid,nodev -d konstruktoid/mongodb \
     --tlsMode requireTLS --tlsCertificateKeyFile /run/mongod-secrets/mongodb.pem \
     --tlsCAFile /run/mongod-secrets/mongodb-cert.crt --tlsAllowConnectionsWithoutCertificates
 $ podman exec -ti mongo02 mongosh --tls --tlsAllowInvalidCertificates --port 27017 \

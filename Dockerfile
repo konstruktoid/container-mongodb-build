@@ -35,9 +35,13 @@ RUN groupadd -r "${MONGOUSER}" && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
       /usr/share/doc /usr/share/doc-base \
       /usr/share/man /usr/share/locale /usr/share/zoneinfo && \
-    mkdir -p /data/db && \
+    mkdir -p /data/db /run/mongod-secrets && \
     chmod 0755 /etc/mongod/*.sh && \
-    chown -R "${MONGOUSER}:${MONGOUSER}" /data/db /etc/mongod
+    chown -R "${MONGOUSER}:${MONGOUSER}" /data/db /etc/mongod /run/mongod-secrets && \
+    chmod 1777 /run/mongod-secrets
+# 1777, not owner-only: mounting --tmpfs over this path at runtime keeps the
+# image's mode but resets ownership to root, so mongodb needs the world-write
+# bit to still create the keyfile/cert there.
 
 VOLUME ["/data/db"]
 EXPOSE 27017
