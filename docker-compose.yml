@@ -10,6 +10,7 @@ services:
     read_only: true
     tmpfs:
       - /tmp
+      - /run/mongod-secrets
     volumes:
       - mongo-data:/data/db
     cap_drop:

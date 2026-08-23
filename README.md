@@ -21,9 +21,10 @@ ENV MONGOUSER=mongodb
 
 ### Cluster authentication keyfile
 
-`files/mongokeyfile.sh` generates `/etc/mongod/mongodb.keyfile` during the build.
-The keyfile is a shared secret, so it is never committed to this repository and
-every build produces a different one.
+`files/mongokeyfile.sh` generates `/run/mongod-secrets/mongodb.keyfile` when the
+container starts, not during the build, so the key never ends up in an image
+layer. It is a shared secret, so it is never committed to this repository and
+every container start produces a different one.
 
 Members of the same replica set must share one key, so for anything beyond a
 single-node lab, mount your own keyfile over the generated one. It has to be
@@ -32,7 +33,7 @@ mode `0400` and owned by the `mongodb` user:
 ```sh
 openssl rand -base64 756 > mongodb.keyfile
 chmod 0400 mongodb.keyfile
-podman run -v ./mongodb.keyfile:/etc/mongod/mongodb.keyfile:ro,Z ... konstruktoid/mongodb
+podman run -v ./mongodb.keyfile:/run/mongod-secrets/mongodb.keyfile:ro,Z ... konstruktoid/mongodb
 ```
 
 ## Running
@@ -49,16 +50,16 @@ $ podman exec -ti mongo01 mongosh --port 27017 --eval "printjson(db.hostInfo())"
 
 ### Using TLS
 
-A self-signed certificate is generated during the build: the key and certificate
-together at `/etc/ssl/mongodb.pem`, and the certificate alone at
-`/etc/ssl/mongodb-cert.crt`. The CN is the build-time hostname, with `localhost`
-and `127.0.0.1` as subject alternative names. It is fine for a lab and nothing
-else.
+A self-signed certificate is generated when the container starts: the key and
+certificate together at `/run/mongod-secrets/mongodb.pem`, and the certificate
+alone at `/run/mongod-secrets/mongodb-cert.crt`. The CN is the container's
+hostname, with `localhost` and `127.0.0.1` as subject alternative names. It is
+fine for a lab and nothing else.
 
 ```sh
 $ podman run --name mongo02 --cap-drop=all -p 27017:27017 -d konstruktoid/mongodb \
-    --tlsMode requireTLS --tlsCertificateKeyFile /etc/ssl/mongodb.pem \
-    --tlsCAFile /etc/ssl/mongodb-cert.crt --tlsAllowConnectionsWithoutCertificates
+    --tlsMode requireTLS --tlsCertificateKeyFile /run/mongod-secrets/mongodb.pem \
+    --tlsCAFile /run/mongod-secrets/mongodb-cert.crt --tlsAllowConnectionsWithoutCertificates
 $ podman exec -ti mongo02 mongosh --tls --tlsAllowInvalidCertificates --port 27017 \
     --eval 'printjson(db.hostInfo())'
 ```

@@ -37,10 +37,7 @@ RUN groupadd -r "${MONGOUSER}" && \
       /usr/share/man /usr/share/locale /usr/share/zoneinfo && \
     mkdir -p /data/db && \
     chmod 0755 /etc/mongod/*.sh && \
-    /etc/mongod/mongokeyfile.sh && \
-    /etc/mongod/mongocert.sh && \
-    chown -R "${MONGOUSER}:${MONGOUSER}" /data/db /etc/mongod /etc/ssl/mongodb.pem && \
-    chmod 0400 /etc/mongod/mongodb.keyfile /etc/ssl/mongodb.pem
+    chown -R "${MONGOUSER}:${MONGOUSER}" /data/db /etc/mongod
 
 VOLUME ["/data/db"]
 EXPOSE 27017
