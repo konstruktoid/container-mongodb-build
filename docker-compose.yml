@@ -1,5 +1,5 @@
-version: "3"
-
+---
+# The top-level "version" key is obsolete and ignored by Compose v2.
 services:
   mongo:
     build:
@@ -7,9 +7,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - "27017"
-    cap_add:
-      - AUDIT_WRITE
-      - SETGID
-      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run/mongod-secrets
+    volumes:
+      - mongo-data:/data/db
     cap_drop:
       - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  mongo-data:

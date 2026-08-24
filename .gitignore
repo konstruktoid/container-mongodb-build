@@ -1,0 +1,3 @@
+# generated per build, never committed
+files/mongodb.keyfile
+*.pem
